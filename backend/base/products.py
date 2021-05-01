@@ -1,8 +1,8 @@
-const products=[
+products=[
     {'_id':'1',
       'name': 'A.R.M.Y. BOMBS',
       'description': 'this is the latest version of ARMY BOOM',
-      'photo': '/images/ARMY BOOM.jpg',
+      'photo': '/images/ARMY_BOOM.jpg',
       'rating': 5.0,
       'numrating': 100,
       'price':30,
@@ -22,7 +22,7 @@ const products=[
     {'_id':'3',
     'name': 'BT21 Doll',
     'description': 'New collection',
-    'photo': '/images/BT21 doll.jpg',
+    'photo': '/images/BT21_doll.jpg',
     'rating': 4.0,
     'numrating': 150,
     'price':15,
@@ -32,7 +32,7 @@ const products=[
     {'_id':'4',
     'name': 'BT21 Key Clip',
     'description': 'New product collection',
-    'photo': '/images/BT21 key clip.jpg',
+    'photo': '/images/BT21_key_clip.jpg',
     'rating': 4.3,
     'numrating': 72,
     'price':3,
@@ -42,7 +42,7 @@ const products=[
     {'_id':'5',
     'name': 'Concept T-Shirt',
     'description': 'good quality t shirt',
-    'photo': '/images/concept T-shirt.jpg',
+    'photo': '/images/concept_T_shirt.jpg',
     'rating': 4.5,
     'numrating': 30,
     'price':10,
@@ -81,4 +81,3 @@ const products=[
     },
 ]
 
-export default products
