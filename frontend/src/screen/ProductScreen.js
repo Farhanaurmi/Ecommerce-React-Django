@@ -1,26 +1,30 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Button, Card } from 'react-bootstrap'
 import Rating from '../components/Rating'
-import axios from 'axios'
+import Loader from '../components/Loader'
+import Message from '../components/Message'
+import { useDispatch,useSelector } from 'react-redux'
+import { listProductDetails } from '../actions/productActions'
 
 function ProductScreen({ match }) {
-    const[product, setProduct]=useState([])
+    const dispatch = useDispatch()
+    const productDetails = useSelector(state => state.productDetails)
+    const { loading, error, product} = productDetails
 
   useEffect(() => {
-    async function fetchProduct(){
-      const{data}= await axios.get(`/api/products/${ match.params.id }`)
-      setProduct(data)
-    }
-    fetchProduct()
-  }, [])
+    dispatch(listProductDetails(match.params.id))
+  }, [dispatch, match])
 
     return (
         <div>
             <Link to='/' className='btn btn-light my-3'>Go Back</Link>
-            <Row>
+            {loading ? <Loader />
+            :error ? <Message variant='danger'>{error}</Message>
+                :(
+                <Row>
                 <Col>
-                <Image src={ product.photo } alt={ product.name } fluid/>
+                <Image src={product.photo} alt={product.name} fluid />
                 </Col>
                 <Col md={3}>
                  <ListGroup variant="flush">
@@ -63,7 +67,8 @@ function ProductScreen({ match }) {
                         </ListGroup>
                     </Card>
                 </Col>
-            </Row>
+            </Row>)
+            }
         </div>
     )
 }
