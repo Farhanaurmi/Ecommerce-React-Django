@@ -1,8 +1,17 @@
 import React from 'react'
-import { Navbar,Nav,Container } from 'react-bootstrap'
+import { Navbar,Nav,Container, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+import { useDispatch,useSelector } from 'react-redux'
+import { logout } from '../actions/userActions'
 
 function Header() {
+    const userLogin=useSelector(state=>state.userLogin)
+    const { userInfo }=userLogin
+    const dispatch = useDispatch()
+
+    const LogoutHandler=()=>{
+        dispatch(logout())
+    }
     return (
             <header>
                 <Navbar bg="dark" variand="dark" expand="lg" collapseOnSelect>
@@ -18,11 +27,20 @@ function Header() {
                         <LinkContainer to='/cart'>
                         <Nav.Link ><i className="fas fa-shopping-cart"></i>Cart</Nav.Link>
                         </LinkContainer>
-
-                        <LinkContainer to='/login'>
-                        <Nav.Link ><i className="fas fa-user"></i>Login</Nav.Link>
-                        </LinkContainer>
+                        {userInfo ? (
+                            <NavDropdown title={userInfo.name} id='username'>
+                                <LinkContainer to='/profile'>
+                                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                                </LinkContainer>
+                                <NavDropdown.Item onClick={LogoutHandler}>Logout</NavDropdown.Item>
+                            </NavDropdown>
+                        ): (
+                            
+                            <LinkContainer to='/login'>
+                            <Nav.Link ><i className="fas fa-user"></i>Login</Nav.Link>
+                            </LinkContainer>
                         
+                        )}
                         </Nav>
                     </Navbar.Collapse>
                     </Container>
