@@ -10,6 +10,7 @@ import RegisterScreen from './screen/RegisterScreen'
 import ProfileScreen from './screen/ProfileScreen'
 import ShippingScreen from './screen/ShippingScreen'
 import PaymentScreen from './screen/PaymentScreen'
+import PlaceOrderScreen from './screen/PlaceOrderScreen'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path='/register' component={RegisterScreen}/>
           <Route path='/shipping' component={ShippingScreen}/>
           <Route path='/profile' component={ProfileScreen}/>
+          <Route path='/placeorder' component={PlaceOrderScreen}/>
           <Route path='/payment' component={PaymentScreen}/>
           <Route path='/product/:id' component={ProductScreen}/>
           <Route path='/cart/:id?' component={CartScreen}/>
