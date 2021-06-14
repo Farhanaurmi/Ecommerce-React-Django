@@ -12,5 +12,6 @@ urlpatterns = [
     path('users', views.getUser ,name="users"),
     path('products', views.getProducts ,name="products"),
     path('products/<str:pk>', views.getProduct),
+    path('order/add', views.addOrderItem, name="orders-add"),
 
 ]
