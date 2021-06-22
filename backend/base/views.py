@@ -11,6 +11,7 @@ from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
+from datetime import datetime
 
 from .models import *
 
@@ -63,6 +64,28 @@ def getUser(request):
     serializer=UserSerializer(users, many=True)
     return Response(serializer.data)
 
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getUserById(request,pk):
+    user=User.objects.get(id=pk)
+    serializer=UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+@api_view(['PUT'])
+@permission_classes([IsAdminUser])
+def updateUser(request,pk):
+    user=User.objects.get(id=pk)
+    serializer=UserSerializerWithToken(user, many=False)
+
+    data=request.data
+    user.first_name=data['name']
+    user.username=data['email']
+    user.email=data['email']
+    user.email=data['isAdmin']
+
+    user.save()
+    return Response(serializer.data)
 
 @api_view(['POST'])
 def registerUser(request):
@@ -156,3 +179,30 @@ def getOrderById(request,pk):
     except:
         return Response({'detail':'order does not exist'},status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request,pk):
+    order= Order.objects.get(_id=pk)
+    order.isPaid=True
+    order.paidAt= datetime.now()
+    order.save()
+
+    return Response("order paid")
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getMyOrder(request):
+    user = request.user
+    orders = user.order_set.all()
+    serializer = OrderSerializer(orders, many = True)
+
+    return Response(serializer.data)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteUser(request,pk):
+    userDeletion= User.objects.get(id=pk)
+    userDeletion.delete()
+
+    return Response("user was deleted")
