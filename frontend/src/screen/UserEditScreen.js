@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { useDispatch,useSelector } from 'react-redux'
 import { Form,Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import { getUserDetails,updateUserProfile } from '../actions/userActions'
+import { getUserDetails,updateUser } from '../actions/userActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import { USER_UPDATE_RESET } from '../constants/userConstants'
 import FormContainer from '../components/FormContainer'
 
 function UserEditScreen({ history,match }) {
@@ -15,7 +15,7 @@ function UserEditScreen({ history,match }) {
 
     const [name,setName]= useState('')
     const [email,setEmail]= useState('')
-    const [isAdmin,setIsAdmin]= useState('')
+    const [isAdmin,setIsAdmin]= useState(false)
 
 
 
@@ -23,23 +23,32 @@ function UserEditScreen({ history,match }) {
 
     const userDetails=useSelector(state=>state.userDetails)
     const { error, loading, user }=userDetails
+
+    const userUpdate=useSelector(state=>state.userUpdate)
+    const { error:errorUpdate, loading:loadingUpdate, success:successUpdate }=userUpdate
    
 
     useEffect(() => {
-        if(!user.name || user._id !== Number(userId) ){
-            dispatch(getUserDetails(userId))
-
+        if(successUpdate){
+            dispatch({type:USER_UPDATE_RESET})
+            history.push('/admin/userlist')
         }else{
-            setName(user.name)
-            setEmail(user.email)
-            setIsAdmin(user.isAdmin)
+            if(!user.name || user._id !== Number(userId) ){
+                dispatch(getUserDetails(userId))
+    
+            }else{
+                setName(user.name)
+                setEmail(user.email)
+                setIsAdmin(user.isAdmin)
+            }
+      
         }
-  
-    }, [user,userId])
+
+    }, [user,userId,history,successUpdate,dispatch])
 
     const submitHandler=(e)=>{
         e.preventDefault()
-
+        dispatch(updateUser({_id:user._id, name, email, isAdmin}))
 
     }
     return (
@@ -48,9 +57,12 @@ function UserEditScreen({ history,match }) {
             </Link>
             <FormContainer>
             <h1>Edit User</h1>
-            {error && <Message variant='danger'>{error}</Message>}
-            {loading && <Loader />}
-            <Form onSubmit={submitHandler}>
+            {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+            {loadingUpdate && <Loader />}
+            {loading ? (<Loader/>)
+            : error ? ( <Message variant='danger'>{error}</Message>)
+            :(
+            <Form onSubmit={ submitHandler }>
                 <Form.Group controlId='name'>
                     <Form.Label>Name</Form.Label>
                     <Form.Control
@@ -86,6 +98,7 @@ function UserEditScreen({ history,match }) {
                 </Form.Group>
                 <Button type='submit' variant='primary'>Update</Button>
             </Form>
+            )}
             </FormContainer>
             
         </div>

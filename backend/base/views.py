@@ -76,13 +76,13 @@ def getUserById(request,pk):
 @permission_classes([IsAdminUser])
 def updateUser(request,pk):
     user=User.objects.get(id=pk)
-    serializer=UserSerializerWithToken(user, many=False)
+    serializer=UserSerializer(user, many=False)
 
     data=request.data
     user.first_name=data['name']
     user.username=data['email']
     user.email=data['email']
-    user.email=data['isAdmin']
+    user.is_staff=data['isAdmin']
 
     user.save()
     return Response(serializer.data)
