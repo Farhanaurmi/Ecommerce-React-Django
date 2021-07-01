@@ -23,7 +23,7 @@ function UserListScreen({history}) {
         }else{
             history.push('/login')
         }
-    }, [dispatch,history,success])
+    }, [dispatch,history,success,userInfo])
 
     const deleteHandler=(id)=>{
         if(window.confirm('are you sure?')){

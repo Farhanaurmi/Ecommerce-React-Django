@@ -206,3 +206,11 @@ def deleteUser(request,pk):
     userDeletion.delete()
 
     return Response("user was deleted")
+
+@api_view(['DELETE'])
+@permission_classes([IsAdminUser])
+def deleteProduct(request,pk):
+    productDeletion= Product.objects.get(_id=pk)
+    productDeletion.delete()
+
+    return Response("product was deleted")
