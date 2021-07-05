@@ -16,6 +16,7 @@ urlpatterns = [
     path('products', views.getProducts ,name="products"),
     path('order/myorders', views.getMyOrder, name="myorders"),
     path('products/create', views.createProduct, name='product-create'),
+    path('products/update', views.updateImage, name='update-image'),
     path('products/<str:pk>', views.getProduct),
     
     path('products/update/<str:pk>', views.updateProduct , name='product-update'),
