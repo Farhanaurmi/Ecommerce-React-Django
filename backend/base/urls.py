@@ -21,10 +21,12 @@ urlpatterns = [
     
     path('products/update/<str:pk>', views.updateProduct , name='product-update'),
     path('products/delete/<str:pk>', views.deleteProduct , name='product-delete'),
+    path('order', views.getOrder, name="orders"),
     path('order/add', views.addOrderItem, name="orders-add"),
     
     
     path('order/<str:pk>/', views.getOrderById, name='user-order'),
+    path('order/<str:pk>/deliver', views.updateOrderToDelivered, name='deliver'),
     path('order/<str:pk>/pay', views.updateOrderToPaid, name='pay'),
 
 ]
