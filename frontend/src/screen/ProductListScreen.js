@@ -6,11 +6,12 @@ import { listProducts,deleteProduct,createProduct } from '../actions/productActi
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import Paginate from '../components/Paginate'
 
 function ProductListScreen({history,match}) {
     const dispatch= useDispatch()
     const productList =useSelector(state=>state.productList)
-    const { error,loading,products }=productList
+    const { error,loading,products,page,pages }=productList
 
     const productDelete =useSelector(state=>state.productDelete)
     const { error:errorDelete,loading:loadingDelete,success:successDelete }=productDelete
@@ -21,6 +22,7 @@ function ProductListScreen({history,match}) {
     const userLogin=useSelector(state=>state.userLogin)
     const { userInfo }=userLogin
 
+    let keyword = history.location.search
    
     useEffect(() => {
         dispatch({type: PRODUCT_CREATE_RESET})
@@ -30,10 +32,10 @@ function ProductListScreen({history,match}) {
         if(successCreate){
             history.push(`/admin/product/${createdProduct._id}/edit`)
         }else{
-            dispatch(listProducts())
+            dispatch(listProducts(keyword))
         }
 
-    }, [dispatch,history,userInfo,successDelete,successCreate,createdProduct])
+    }, [dispatch,history,userInfo,successDelete,successCreate,createdProduct,keyword])
 
     const deleteHandler=(id)=>{
         if(window.confirm('Are you sure?')){
@@ -65,7 +67,7 @@ function ProductListScreen({history,match}) {
                 <Loader/>
             ) : error ? (
                 <Message variant='danger'>{error}</Message>
-            ) : (
+            ) : ( <div>
                 <Table striped bordered hover responsive className='table-sm'>
                     <thead>
                         <tr>
@@ -98,6 +100,8 @@ function ProductListScreen({history,match}) {
                         ))}
                     </tbody>
                 </Table>
+                <Paginate page={page} pages={pages} isAdmin={true}/>
+                </div>
                 )}
         </div>
     )
