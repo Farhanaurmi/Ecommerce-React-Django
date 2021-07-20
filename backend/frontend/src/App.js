@@ -17,7 +17,7 @@ import UserListScreen from './screen/UserListScreen'
 import UserEditScreen from './screen/UserEditScreen'
 import ProductEditScreen from './screen/ProductEditScreen'
 import ProductListScreen from './screen/ProductListScreen'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route } from 'react-router-dom'
 
 function App() {
   return (
